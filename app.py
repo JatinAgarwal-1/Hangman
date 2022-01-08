@@ -1,3 +1,4 @@
+import os
 import requests
 
 hang = ["""
@@ -28,7 +29,7 @@ H A N G M A N
       |
       |
 =========""", """
-H A N G M A N 
+Now Executioner Can See You ):
 
   +---+
   |   |
@@ -37,7 +38,7 @@ H A N G M A N
       |
       |
 =========""", """
-H A N G M A N 
+Play Care Fully  
   +---+
   |   |
   O   |
@@ -45,7 +46,7 @@ H A N G M A N
       |
       |
 =========""", """
-H A N G M A N 
+About to get hanged 
 
   +---+
   |   |
@@ -54,7 +55,7 @@ H A N G M A N
  /    |
       |
 =========""", """
-H A N G M A N 
+OO OOh! Game Over 
   +---+
   |   |
   O   |
@@ -64,6 +65,17 @@ H A N G M A N
 ========="""]
 
 
+def clearConsole():
+    command = 'clear'
+    if os.name in ('nt', 'dos'):  # If Machine is running on Windows, use cls
+        command = 'cls'
+    os.system(command)
+
+
+def greet(name):
+    print(f"Welcome {name} to Hangman Game".center(100))
+
+
 def getRandomWord():
     URL = 'https://random-word-api.herokuapp.com/word?number=1'
 
@@ -71,7 +83,8 @@ def getRandomWord():
 
     word = r.json()[0]
 
-    print(word)
+    # print(word)
+
     return word
 
 
@@ -114,6 +127,13 @@ def playAgain():
 
 
 def main():
+
+    name = input("Please Enter Your Name :  ")
+
+    clearConsole()
+
+    greet(name)
+
     missedLetters = ''
     correctLetters = ''
     secretWord = getRandomWord()
@@ -140,10 +160,12 @@ def main():
             missedLetters = missedLetters + guess
 
             if len(missedLetters) == len(hang) - 1:
+                clearConsole()
                 displayBoard(hang, missedLetters, correctLetters, secretWord)
-                print('You have run out of guesses!\nAfter ' + str(len(missedLetters)) + ' missed guesses and ' +
+                print('You have been Hanged!\nAfter ' + str(len(missedLetters)) + ' missed guesses and ' +
                       str(len(correctLetters)) + ' correct guesses, the word was "' + secretWord + '"')
                 gameIsDone = True
+
         if gameIsDone:
             if playAgain():
                 missedLetters = ''
@@ -152,6 +174,8 @@ def main():
                 secretWord = getRandomWord()
             else:
                 break
+
+        clearConsole()
 
 
 if __name__ == '__main__':
